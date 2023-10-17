@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registro de Alunos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        
+        h1 {
+            background-color: #333;
+            color: #fff;
+            padding: 20px 0;
+            margin: 0;
+        }
+        
+        #aluno-form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px;
+            box-shadow: 0px 0px 10px #ccc;
+            display: inline-block;
+            text-align: left;
+        }
+        
+        label, input, button {
+            display: block;
+            margin: 10px 0;
+        }
+        
+        button {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px #ccc;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #333;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Registro de Alunos</h1>
+
+    <form id="aluno-form">
+        <label for="nome">Nome do Aluno:</label>
+        <input type="text" id="nome" required>
+        <label for="idade">Idade do Aluno:</label>
+        <input type="number" id="idade" required>
+        <label for="notas">Notas (separadas por vírgula):</label>
+        <input type="text" id="notas" required>
+        <button type="button" onclick="adicionarAluno()">Adicionar Aluno</button>
+    </form>
+
+    <table id="aluno-table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Idade</th>
+                <th>Notas</th>
+                <th>Média</th>
+                <th>Situação</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Os dados dos alunos serão inseridos aqui dinamicamente -->
+        </tbody>
+    </table>
+
+    <script>
+        var alunos = [];
+
+        function adicionarAluno() {
+            var nome = document.getElementById("nome").value;
+            var idade = document.getElementById("idade").value;
+            var notasStr = document.getElementById("notas").value;
+            var notas = notasStr.split(",").map(Number);
+            var media = notas.reduce((a, b) => a + b) / notas.length;
+
+            alunos.push({
+                nome: nome,
+                idade: idade,
+                notas: notas,
+                media: media
+            });
+
+            atualizarTabela();
+        }
+
+        function atualizarTabela() {
+            var tableBody = document.querySelector("#aluno-table tbody");
+            tableBody.innerHTML = "";
+
+            alunos.forEach(function (aluno) {
+                var newRow = tableBody.insertRow(tableBody.rows.length);
+
+                var cell1 = newRow.insertCell(0);
+                cell1.innerHTML = aluno.nome;
+
+                var cell2 = newRow.insertCell(1);
+                cell2.innerHTML = aluno.idade;
+
+                var cell3 = newRow.insertCell(2);
+                cell3.innerHTML = aluno.notas.join(", ");
+
+                var cell4 = newRow.insertCell(3);
+                cell4.innerHTML = aluno.media.toFixed(2);
+
+                var cell5 = newRow.insertCell(4);
+                cell5.innerHTML = aluno.media < 6 ? "Reprovado" : "Aprovado";
+            });
+        }
+    </script>
+</body>
+</html>
